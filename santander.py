@@ -1,53 +1,50 @@
-def multiplicar(a, b):  # função para multiplicar 2 numeros
-    return a * b
+menu = '''
 
+[d] Depositar
+[s] Sacar
+[e] Extrato
+[q] Sair
 
-resultado = multiplicar(5, 3) + multiplicar(2, 4)
+=> '''
 
-print(resultado)
-print('*' * 50)
+saldo = 0
+limite = 500
+extrato = ''
+numero_saques = 0
+LIMITE_SAQUES = 3
 
+while True:
 
-def calcular_media(*numeros):  # realizar a média de n numeros.
-    soma = sum(numeros)
-    quantidade = len(numeros)
-    media = soma / quantidade
-    return media
+    opcao = input(menu)
 
+    if opcao == 'd':
+        valor_depositado = int(input('Digite o valor do deposito: '))
+        saldo += valor_depositado
+        print(f'Saldo atual: R$ {saldo:.2f}')
 
-print(calcular_media(5, 3, 9, 10, 20))
-print('*' * 50)
+    elif opcao == 's':
+        valor_sacado = int(input('Digite o valor do saque: '))
+        if saldo >= valor_sacado:
+            if valor_sacado <= limite:
+                if numero_saques < LIMITE_SAQUES:
+                    saldo -= valor_sacado
+                    numero_saques += 1
+                    print(f'Saldo atual: R$ {saldo:.2f}')
+                else:
+                    print('Você ultrapassou a quantidade de 3 saques diários.')
+            else:
+                print('O valor do saque ultrapassou o limite por saque.')
+        else:
+            print('Saldo insuficiente.')
 
-# como declarar lambda
-somar = lambda x: x + 3
+    elif opcao == 'e':
+        print(f'''
+        Extrato
+        O seu saldo atual é de R$ {saldo:.2f} e você tem {LIMITE_SAQUES - numero_saques} saques disponíveis hoje..
+        ''')
 
-print(somar(5))
-print('*' * 50)
+    elif opcao == 'q':
+        break
 
-try:
-    # Código que pode gerar uma exceção
-    arquivo = open("arquivo.txt", "r")
-    # Realizar operações com o arquivo
-except FileNotFoundError:
-    print("Erro: Arquivo não encontrado")
-finally:
-    arquivo.close()  # Fechar o arquivo sempre, mesmo se ocorrer uma exceção
-
-print('*' * 50)
-
-# usando with para abertura e fechamento do arquivo automaticamente
-with open("dados.txt", "r") as arquivo:
-    conteudo = arquivo.read()
-    print(conteudo)
-# leitura de arquivo
-arquivo = open("dados.txt", "r")
-conteudo = arquivo.read()
-print(conteudo)
-arquivo.close()
-
-print('*' * 50)
-# escrita de arquivo
-arquivo = open("dados.txt", "w")
-arquivo.write("Olá, mundo!")
-arquivo.close()
-
+    else:
+        print('Operação inválida, por favor selecione novamente a opção desejada.')
